@@ -43,36 +43,29 @@ class RegistrationFormPage {
     await this.page.keyboard.press('Enter');
 
     await this.page.type(this.selectors.subjectInput, 'Maths');
+    await this.page.waitForTimeout(100);
     await this.page.keyboard.press('Enter');
 
     await this.page.click(this.selectors.hobbies('Sports'));
     await this.page.click(this.selectors.hobbies('Reading'));
 
-    await this.page.setInputFiles(this.selectors.uploadPicture, 'test-data/test-image.jpg');
+    await this.page.setInputFiles(this.selectors.uploadPicture, 'test-data/test-image.jpeg');
 
     await this.page.fill(this.selectors.address, data.address);
     await this.page.click(this.selectors.state);
     await this.page.click(this.selectors.stateOption);
     await this.page.click(this.selectors.city);
     await this.page.click(this.selectors.cityOption);
-  }
-
-  async submitForm() {
+    await this.page.waitForTimeout(100);
     await this.page.click(this.selectors.submitBtn);
   }
 
   async validateModal(data) {
     await this.page.waitForSelector(this.selectors.modalTitle);
     const title = await this.page.textContent(this.selectors.modalTitle);
-    if (title !== 'Thanks for submitting the form') throw new Error('Modal title incorrect');
-
-    const rows = await this.page.$$(this.selectors.tableRows);
-    for (let row of rows) {
-      const text = await row.textContent();
-      console.log(text);
-    }
-
-    await this.page.click(this.selectors.closeBtn);
+    
+    if (title !== 'Thanks for submitting the form') 
+      throw new Error('Modal title incorrect');
   }
 }
 
